@@ -19,10 +19,11 @@ class MemoController extends Controller
             });
         }
 
-        $memos = $query->latest()->get();
+        $memos = $query->latest()->paginate(5)->withQueryString();
 
         return view('memos.index', compact('memos', 'search'));
     }
+
 
     public function create()
     {
