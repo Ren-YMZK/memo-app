@@ -21,7 +21,13 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
         Auth::user()->memos()->create($request->only(['title', 'content']));
+
         return redirect('/');
     }
 
