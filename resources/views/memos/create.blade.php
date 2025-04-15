@@ -1,25 +1,42 @@
-<h1>新しいメモを作る</h1>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            新しいメモを作成
+        </h2>
+    </x-slot>
 
-<form action="/memos" method="POST">
-    @csrf
+    <div class="py-6 px-4 max-w-2xl mx-auto">
+        <form action="{{ route('memos.store') }}" method="POST" class="space-y-6">
+            @csrf
 
-    {{-- タイトル --}}
-    <label>タイトル:</label><br>
-    <input type="text" name="title" value="{{ old('title') }}"><br>
-    @error('title')
-        <div style="color: red;">{{ $message }}</div>
-    @enderror
-    <br>
+            {{-- タイトル --}}
+            <div>
+                <label for="title" class="block text-gray-700 font-medium">タイトル</label>
+                <input type="text" name="title" id="title"
+                       value="{{ old('title') }}"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                @error('title')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-    {{-- 内容 --}}
-    <label>内容:</label><br>
-    <textarea name="content" rows="5" cols="30">{{ old('content') }}</textarea><br>
-    @error('content')
-        <div style="color: red;">{{ $message }}</div>
-    @enderror
-    <br>
+            {{-- 内容 --}}
+            <div>
+                <label for="content" class="block text-gray-700 font-medium">内容</label>
+                <textarea name="content" id="content" rows="6"
+                          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">{{ old('content') }}</textarea>
+                @error('content')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-    <button type="submit">保存</button>
-</form>
-
-<p><a href="/">← 一覧へ戻る</a></p>
+            {{-- 保存ボタン --}}
+            <div>
+                <button type="submit"
+                        class="bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow-sm">
+                    保存する
+                </button>
+            </div>
+        </form>
+    </div>
+</x-app-layout>
