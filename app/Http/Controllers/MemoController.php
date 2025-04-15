@@ -39,8 +39,18 @@ class MemoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
         $memo = Memo::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        $memo->update($request->only(['title', 'content']));
+
+        $memo->update([
+            'title' => $request->input('title') ?? '',
+            'content' => $request->input('content') ?? '',
+        ]);
+
         return redirect('/');
     }
 
