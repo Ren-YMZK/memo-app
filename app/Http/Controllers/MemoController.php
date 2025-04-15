@@ -8,10 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class MemoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $memos = Auth::user()->memos;
-        return view('memos.index', compact('memos'));
+        $query = Memo::where('user_id', Auth::id());
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $memos = $query->latest()->get();
+
+        return view('memos.index', compact('memos', 'search'));
     }
 
     public function create()
